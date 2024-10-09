@@ -11,7 +11,7 @@ namespace Org.BouncyCastle.Cms
 	/**
 	* containing class for an CMS AuthEnveloped Data object
 	*/
-	internal class CmsAuthEnvelopedData
+	public class CmsAuthEnvelopedData
 	{
 		internal RecipientInformationStore recipientInfoStore;
 		internal ContentInfo contentInfo;
@@ -65,6 +65,14 @@ namespace Org.BouncyCastle.Cms
 			this.authAttrs = authEnvData.AuthAttrs;
 			this.mac = authEnvData.Mac.GetOctets();
 			this.unauthAttrs = authEnvData.UnauthAttrs;
+		}
+
+		/**
+		* return the ASN.1 encoded representation of this object.
+		*/
+		public byte[] GetEncoded()
+		{
+			return contentInfo.GetEncoded();
 		}
 
 		private class AuthEnvelopedSecureReadable : CmsSecureReadable
