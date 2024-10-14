@@ -20,15 +20,7 @@ namespace Org.BouncyCastle.Crypto.Tests
     {
         private delegate void RunTestVector(string name, Dictionary<string, string> data);
 
-        private static readonly Dictionary<string, MLDsaParameters> Parameters =
-            new Dictionary<string, MLDsaParameters>()
-        {
-            { "ML-DSA-44", MLDsaParameters.ML_DSA_44 },
-            { "ML-DSA-65", MLDsaParameters.ML_DSA_65 },
-            { "ML-DSA-87", MLDsaParameters.ML_DSA_87 },
-        };
-
-        private static readonly Dictionary<string, MLDsaParameters> FileParameters =
+        private static readonly Dictionary<string, MLDsaParameters> AcvpFileParameters =
             new Dictionary<string, MLDsaParameters>()
         {
             { "keyGen_ML-DSA-44.txt", MLDsaParameters.ML_DSA_44 },
@@ -42,204 +34,189 @@ namespace Org.BouncyCastle.Crypto.Tests
             { "sigVer_ML-DSA-87.txt", MLDsaParameters.ML_DSA_87 },
         };
 
-        private static readonly string[] KeyGenFiles =
+        private static readonly Dictionary<string, MLDsaParameters> Parameters =
+            new Dictionary<string, MLDsaParameters>()
+        {
+            { "ML-DSA-44", MLDsaParameters.ML_DSA_44 },
+            { "ML-DSA-65", MLDsaParameters.ML_DSA_65 },
+            { "ML-DSA-87", MLDsaParameters.ML_DSA_87 },
+        };
+
+        private static readonly IEnumerable<MLDsaParameters> ParameterSets = Parameters.Values;
+
+        private static readonly string[] KeyGenAcvpFiles =
         {
             "keyGen_ML-DSA-44.txt",
             "keyGen_ML-DSA-65.txt",
             "keyGen_ML-DSA-87.txt",
         };
 
-        private static readonly string[] SigGenFiles =
+        private static readonly string[] SigGenAcvpFiles =
         {
             "sigGen_ML-DSA-44.txt",
             "sigGen_ML-DSA-65.txt",
             "sigGen_ML-DSA-87.txt",
         };
 
-        private static readonly string[] SigVerFiles =
+        private static readonly string[] SigVerAcvpFiles =
         {
             "sigVer_ML-DSA-44.txt",
             "sigVer_ML-DSA-65.txt",
             "sigVer_ML-DSA-87.txt",
         };
 
-        [Test]
-        public void Consistency()
+        [TestCaseSource(nameof(ParameterSets))]
+        [Parallelizable(ParallelScope.All)]
+        public void Consistency(MLDsaParameters parameters)
         {
             var msg = new byte[2048];
             var random = new SecureRandom();
 
             var kpg = new MLDsaKeyPairGenerator();
+            kpg.Init(new MLDsaKeyGenerationParameters(random, parameters));
 
-            foreach (var parameters in
-                new[]{ MLDsaParameters.ML_DSA_44, MLDsaParameters.ML_DSA_65, MLDsaParameters.ML_DSA_87 })
+            int msgLen = 0;
+            do
             {
-                kpg.Init(new MLDsaKeyGenerationParameters(random, parameters));
-
-                int msgLen = 0;
-                do
+                for (int i = 0; i < 2; ++i)
                 {
-                    for (int i = 0; i < 3; ++i)
+                    var kp = kpg.GenerateKeyPair();
+
+                    var signer = new MLDsaSigner();
+
+                    for (int j = 0; j < 2; ++j)
                     {
-                        var kp = kpg.GenerateKeyPair();
+                        random.NextBytes(msg, 0, msgLen);
 
-                        var signer = new MLDsaSigner();
+                        // sign
+                        signer.Init(true, new ParametersWithRandom(kp.Private, random));
+                        signer.BlockUpdate(msg, 0, msgLen);
+                        var signature = signer.GenerateSignature();
 
-                        for (int j = 0; j < 3; ++j)
-                        {
-                            random.NextBytes(msg, 0, msgLen);
+                        // verify
+                        signer.Init(false, kp.Public);
+                        signer.BlockUpdate(msg, 0, msgLen);
+                        bool shouldVerify = signer.VerifySignature(signature);
 
-                            // sign
-                            signer.Init(true, new ParametersWithRandom(kp.Private, random));
-                            signer.BlockUpdate(msg, 0, msgLen);
-                            var signature = signer.GenerateSignature();
-
-                            // verify
-                            signer.Init(false, kp.Public);
-                            signer.BlockUpdate(msg, 0, msgLen);
-                            bool shouldVerify = signer.VerifySignature(signature);
-
-                            Assert.True(shouldVerify);
-                        }
+                        Assert.True(shouldVerify);
                     }
-
-                    msgLen += msgLen < 128 ? 1 : 17;
                 }
-                while (msgLen <= 2048);
+
+                msgLen += msgLen < 128 ? 1 : 17;
             }
+            while (msgLen <= 2048);
         }
 
-        [TestCaseSource(nameof(KeyGenFiles))]
-        [Parallelizable(ParallelScope.All)]
-        public void KeyGen(string fileName)
+        [Test]
+        [Parallelizable]
+        public void KeyGen()
         {
-            RunTestVectors("pqc/crypto/dilithium/acvp", fileName, (name, data) =>
-            {
-                byte[] seed = Hex.Decode(data["seed"]);
-                byte[] pk = Hex.Decode(data["pk"]);
-                byte[] sk = Hex.Decode(data["sk"]);
-
-                var random = FixedSecureRandom.From(seed);
-                var parameters = FileParameters[name];
-
-                var kpg = new MLDsaKeyPairGenerator();
-                kpg.Init(new MLDsaKeyGenerationParameters(random, parameters));
-
-                var kp = kpg.GenerateKeyPair();
-
-                MLDsaPublicKeyParameters pubParams = (MLDsaPublicKeyParameters)PublicKeyFactory.CreateKey(
-                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo((MLDsaPublicKeyParameters)kp.Public));
-                MLDsaPrivateKeyParameters privParams = (MLDsaPrivateKeyParameters)PrivateKeyFactory.CreateKey(
-                    PrivateKeyInfoFactory.CreatePrivateKeyInfo((MLDsaPrivateKeyParameters)kp.Private));
-
-                Assert.True(Arrays.AreEqual(pk, pubParams.GetEncoded()), name + ": public key");
-                Assert.True(Arrays.AreEqual(sk, privParams.GetEncoded()), name + ": secret key");
-            });
+            RunTestVectors("pqc/crypto/mldsa", "ML-DSA-keyGen.txt",
+                (name, data) => ImplKeyGen(name, data, Parameters[data["parameterSet"]]));
         }
 
-        //[TestCaseSource(nameof(SigGenFiles))]
-        //[Parallelizable(ParallelScope.All)]
-        //public void SigGen(string fileName)
+        [TestCaseSource(nameof(KeyGenAcvpFiles))]
+        [Parallelizable(ParallelScope.All)]
+        public void KeyGenAcvp(string fileName)
+        {
+            RunTestVectors("pqc/crypto/dilithium/acvp", fileName,
+                (name, data) => ImplKeyGen(name, data, AcvpFileParameters[name]));
+        }
+
+        //[Test]
+        //[Parallelizable]
+        //public void SigGen()
         //{
-        //    RunTestVectors("pqc/crypto/dilithium/acvp", fileName, (name, data) =>
-        //    {
-        //        byte[] sk = Hex.Decode(data["sk"]);
-        //        byte[] message = Hex.Decode(data["message"]);
-        //        byte[] signature = Hex.Decode(data["signature"]);
+        //    RunTestVectors("pqc/crypto/mldsa", "ML-DSA-sigGen.txt",
+        //        (name, data) => ImplSigGen(name, data, Parameters[data["parameterSet"]]));
+        //}
 
-        //        bool deterministic = !data.ContainsKey("rnd");
-
-        //        byte[] rnd;
-        //        if (deterministic)
-        //        {
-        //            rnd = new byte[32];
-        //        }
-        //        else
-        //        {
-        //            rnd = Hex.Decode(data["rnd"]);
-        //        }
-
-        //        var parameters = FileParameters[name];
-        //        var privateKey = new MLDsaPrivateKeyParameters(parameters, sk);
-
-        //        byte[] generated = privateKey.SignInternal(rnd, message, 0, message.Length);
-
-        //        Assert.True(Arrays.AreEqual(generated, signature));
-        //    });
+        //[TestCaseSource(nameof(SigGenAcvpFiles))]
+        //[Parallelizable(ParallelScope.All)]
+        //public void SigGenAcvp(string fileName)
+        //{
+        //    RunTestVectors("pqc/crypto/dilithium/acvp", fileName,
+        //        (name, data) => ImplSigGen(name, data, AcvpFileParameters[name]));
         //}
 
         //[Test]
         //[Parallelizable]
-        //public void SigGenCombined()
+        //public void SigVer()
         //{
-        //    RunTestVectors("pqc/crypto/mldsa", "ML-DSA-sigGen.txt", (name, data) =>
-        //    {
-        //        byte[] sk = Hex.Decode(data["sk"]);
-        //        byte[] message = Hex.Decode(data["message"]);
-        //        byte[] signature = Hex.Decode(data["signature"]);
-
-        //        bool deterministic = bool.Parse(data["deterministic"]);
-
-        //        byte[] rnd;
-        //        if (deterministic)
-        //        {
-        //            rnd = new byte[32];
-        //        }
-        //        else
-        //        {
-        //            rnd = Hex.Decode(data["rnd"]);
-        //        }
-
-        //        var parameters = Parameters[data["parameterSet"]];
-        //        var privateKey = new MLDsaPrivateKeyParameters(parameters, sk);
-
-        //        byte[] generated = privateKey.SignInternal(rnd, message, 0, message.Length);
-
-        //        Assert.True(Arrays.AreEqual(generated, signature));
-        //    });
+        //    RunTestVectors("pqc/crypto/mldsa", "ML-DSA-sigVer.txt",
+        //        (name, data) => ImplSigVer(name, data, Parameters[data["parameterSet"]]));
         //}
 
-        //[TestCaseSource(nameof(SigVerFiles))]
+        //[TestCaseSource(nameof(SigVerAcvpFiles))]
         //[Parallelizable(ParallelScope.All)]
-        //public void SigVer(string fileName)
+        //public void SigVerAcvp(string fileName)
         //{
-        //    RunTestVectors("pqc/crypto/dilithium/acvp", fileName, (name, data) =>
-        //    {
-        //        bool testPassed = bool.Parse(data["testPassed"]);
-        //        string reason = data["reason"];
-        //        byte[] pk = Hex.Decode(data["pk"]);
-        //        byte[] sk = Hex.Decode(data["sk"]);
-        //        byte[] message = Hex.Decode(data["message"]);
-        //        byte[] signature = Hex.Decode(data["signature"]);
-
-        //        var parameters = FileParameters[name];
-        //        var privateKey = new MLDsaPrivateKeyParameters(parameters, sk);
-        //        var publicKey = new MLDsaPublicKeyParameters(parameters, pk);
-
-        //        bool verified = publicKey.VerifyInternal(message, 0, message.Length, signature);
-
-        //        Assert.True(verified == testPassed, "expected " + testPassed + " " + reason);
-        //    });
+        //    RunTestVectors("pqc/crypto/dilithium/acvp", fileName,
+        //        (name, data) => ImplSigVer(name, data, AcvpFileParameters[name]));
         //}
 
-        //[Test]
-        //[Parallelizable]
-        //public void SigVerCombined()
+        private static void ImplKeyGen(string name, Dictionary<string, string> data,
+            MLDsaParameters parameters)
+        {
+            byte[] seed = Hex.Decode(data["seed"]);
+            byte[] pk = Hex.Decode(data["pk"]);
+            byte[] sk = Hex.Decode(data["sk"]);
+
+            var random = FixedSecureRandom.From(seed);
+
+            var kpg = new MLDsaKeyPairGenerator();
+            kpg.Init(new MLDsaKeyGenerationParameters(random, parameters));
+
+            var kp = kpg.GenerateKeyPair();
+
+            MLDsaPublicKeyParameters pubParams = (MLDsaPublicKeyParameters)PublicKeyFactory.CreateKey(
+                SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo((MLDsaPublicKeyParameters)kp.Public));
+            MLDsaPrivateKeyParameters privParams = (MLDsaPrivateKeyParameters)PrivateKeyFactory.CreateKey(
+                PrivateKeyInfoFactory.CreatePrivateKeyInfo((MLDsaPrivateKeyParameters)kp.Private));
+
+            Assert.True(Arrays.AreEqual(pk, pubParams.GetEncoded()), name + ": public key");
+            Assert.True(Arrays.AreEqual(sk, privParams.GetEncoded()), name + ": secret key");
+        }
+
+        //private static void ImplSigGen(string name, Dictionary<string, string> data,
+        //    MLDsaParameters parameters)
         //{
-        //    RunTestVectors("pqc/crypto/mldsa", "ML-DSA-sigVer.txt", (name, data) =>
+        //    byte[] sk = Hex.Decode(data["sk"]);
+        //    byte[] message = Hex.Decode(data["message"]);
+        //    byte[] signature = Hex.Decode(data["signature"]);
+
+        //    bool deterministic = !data.ContainsKey("rnd");
+
+        //    byte[] rnd;
+        //    if (deterministic)
         //    {
-        //        bool testPassed = bool.Parse(data["testPassed"]);
-        //        byte[] pk = Hex.Decode(data["pk"]);
-        //        byte[] message = Hex.Decode(data["message"]);
-        //        byte[] signature = Hex.Decode(data["signature"]);
+        //        rnd = new byte[32];
+        //    }
+        //    else
+        //    {
+        //        rnd = Hex.Decode(data["rnd"]);
+        //    }
 
-        //        var parameters = Parameters[data["parameterSet"]];
-        //        var publicKey = new MLDsaPublicKeyParameters(parameters, pk);
+        //    var privateKey = new MLDsaPrivateKeyParameters(parameters, sk);
 
-        //        bool verified = publicKey.VerifyInternal(message, 0, message.Length, signature);
+        //    byte[] generated = privateKey.SignInternal(rnd, message, 0, message.Length);
 
-        //        Assert.True(verified == testPassed, "expected " + testPassed);
-        //    });
+        //    Assert.True(Arrays.AreEqual(generated, signature));
+        //}
+
+        //private static void ImplSigVer(string name, Dictionary<string, string> data,
+        //    MLDsaParameters parameters)
+        //{
+        //    bool testPassed = bool.Parse(data["testPassed"]);
+        //    byte[] pk = Hex.Decode(data["pk"]);
+        //    byte[] message = Hex.Decode(data["message"]);
+        //    byte[] signature = Hex.Decode(data["signature"]);
+
+        //    var publicKey = new MLDsaPublicKeyParameters(parameters, pk);
+
+        //    bool verified = publicKey.VerifyInternal(message, 0, message.Length, signature);
+
+        //    Assert.True(verified == testPassed, "expected " + testPassed);
         //}
 
         private static void RunTestVectors(string homeDir, string fileName, RunTestVector runTestVector)

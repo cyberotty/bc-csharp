@@ -108,6 +108,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             DigestOids.Add(RosstandartObjectIdentifiers.id_tc26_signwithdigest_gost_3410_12_256, RosstandartObjectIdentifiers.id_tc26_gost_3411_12_256);
             DigestOids.Add(RosstandartObjectIdentifiers.id_tc26_signwithdigest_gost_3410_12_512, RosstandartObjectIdentifiers.id_tc26_gost_3411_12_512);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             DigestOids.Add(BCObjectIdentifiers.sphincs256_with_SHA3_512, NistObjectIdentifiers.IdSha3_512);
             DigestOids.Add(BCObjectIdentifiers.sphincs256_with_SHA512, NistObjectIdentifiers.IdSha512);
 
@@ -136,6 +137,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             DigestOids.Add(BCObjectIdentifiers.sphincsPlus_sha2_256f_r3_simple, NistObjectIdentifiers.IdSha256);
             DigestOids.Add(BCObjectIdentifiers.sphincsPlus_shake_256s_r3_simple, NistObjectIdentifiers.IdShake256);
             DigestOids.Add(BCObjectIdentifiers.sphincsPlus_shake_256f_r3_simple, NistObjectIdentifiers.IdShake256);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             DigestOids.Add(BCObjectIdentifiers.falcon, NistObjectIdentifiers.IdShake256);
             DigestOids.Add(BCObjectIdentifiers.falcon_512, NistObjectIdentifiers.IdShake256);
@@ -249,12 +251,14 @@ namespace Org.BouncyCastle.Operators.Utilities
 
             Shake256Oids.Add(EdECObjectIdentifiers.id_Ed448);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             Shake256Oids.Add(BCObjectIdentifiers.dilithium2);
             Shake256Oids.Add(BCObjectIdentifiers.dilithium3);
             Shake256Oids.Add(BCObjectIdentifiers.dilithium5);
             Shake256Oids.Add(BCObjectIdentifiers.dilithium2_aes);
             Shake256Oids.Add(BCObjectIdentifiers.dilithium3_aes);
             Shake256Oids.Add(BCObjectIdentifiers.dilithium5_aes);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             Shake256Oids.Add(BCObjectIdentifiers.falcon_512);
             Shake256Oids.Add(BCObjectIdentifiers.falcon_1024);

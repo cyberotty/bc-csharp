@@ -70,9 +70,13 @@ namespace Org.BouncyCastle.Asn1.BC
         /**
          * Sphincs-256
          */
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincs256                      = bc_sig.Branch("1");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincs256_with_BLAKE512        = sphincs256.Branch("1");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincs256_with_SHA512          = sphincs256.Branch("2");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincs256_with_SHA3_512        = sphincs256.Branch("3");
 
         /**
@@ -136,64 +140,114 @@ namespace Org.BouncyCastle.Asn1.BC
         /**
          * SPHINCS+
          */
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus = bc_sig.Branch("5");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_128s_r3 = sphincsPlus.Branch("1");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_128f_r3 = sphincsPlus.Branch("2");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_128s_r3 = sphincsPlus.Branch("3");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_128f_r3 = sphincsPlus.Branch("4");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_128s_r3 = sphincsPlus.Branch("5");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_128f_r3 = sphincsPlus.Branch("6");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_192s_r3 = sphincsPlus.Branch("7");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_192f_r3 = sphincsPlus.Branch("8");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_192s_r3 = sphincsPlus.Branch("9");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_192f_r3 = sphincsPlus.Branch("10");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_192s_r3 = sphincsPlus.Branch("11");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_192f_r3 = sphincsPlus.Branch("12");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_256s_r3 = sphincsPlus.Branch("13");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_256f_r3 = sphincsPlus.Branch("14");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_256s_r3 = sphincsPlus.Branch("15");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_256f_r3 = sphincsPlus.Branch("16");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_256s_r3 = sphincsPlus.Branch("17");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_256f_r3 = sphincsPlus.Branch("18");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_128s_r3_simple = sphincsPlus.Branch("19");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_128f_r3_simple = sphincsPlus.Branch("20");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_128s_r3_simple = sphincsPlus.Branch("21");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_128f_r3_simple = sphincsPlus.Branch("22");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_128s_r3_simple = sphincsPlus.Branch("23");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_128f_r3_simple = sphincsPlus.Branch("24");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_192s_r3_simple = sphincsPlus.Branch("25");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_192f_r3_simple = sphincsPlus.Branch("26");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_192s_r3_simple = sphincsPlus.Branch("27");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_192f_r3_simple = sphincsPlus.Branch("28");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_192s_r3_simple = sphincsPlus.Branch("29");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_192f_r3_simple = sphincsPlus.Branch("30");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_256s_r3_simple = sphincsPlus.Branch("31");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_256f_r3_simple = sphincsPlus.Branch("32");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_256s_r3_simple = sphincsPlus.Branch("33");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_256f_r3_simple = sphincsPlus.Branch("34");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_256s_r3_simple = sphincsPlus.Branch("35");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_haraka_256f_r3_simple = sphincsPlus.Branch("36");
 
         // Interop OIDs.
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_interop = new DerObjectIdentifier("1.3.9999.6");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_128f = new DerObjectIdentifier("1.3.9999.6.4.13");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_128s = new DerObjectIdentifier("1.3.9999.6.4.16");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_192f = new DerObjectIdentifier("1.3.9999.6.5.10");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_192s = new DerObjectIdentifier("1.3.9999.6.5.12");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_256f = new DerObjectIdentifier("1.3.9999.6.6.10");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_sha2_256s = new DerObjectIdentifier("1.3.9999.6.6.12");
 
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_128f = new DerObjectIdentifier("1.3.9999.6.7.13");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_128s = new DerObjectIdentifier("1.3.9999.6.7.16");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_192f = new DerObjectIdentifier("1.3.9999.6.8.10");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_192s = new DerObjectIdentifier("1.3.9999.6.8.12");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_256f = new DerObjectIdentifier("1.3.9999.6.9.10");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier sphincsPlus_shake_256s = new DerObjectIdentifier("1.3.9999.6.9.12");
 
         [Obsolete("Will be removed - name is erroneous")]
@@ -236,14 +290,21 @@ namespace Org.BouncyCastle.Asn1.BC
         /*
          * Dilithium
          */
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium = bc_sig.Branch("8");
 
         // OpenSSL OIDs
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium2 = new DerObjectIdentifier("1.3.6.1.4.1.2.267.12.4.4"); // dilithium.branch("1");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium3 = new DerObjectIdentifier("1.3.6.1.4.1.2.267.12.6.5"); // dilithium.branch("2");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium5 = new DerObjectIdentifier("1.3.6.1.4.1.2.267.12.8.7"); // dilithium.branch("3");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium2_aes = new DerObjectIdentifier("1.3.6.1.4.1.2.267.11.4.4"); // dilithium.branch("4");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium3_aes = new DerObjectIdentifier("1.3.6.1.4.1.2.267.11.6.5"); // dilithium.branch("5");
+        [Obsolete("Will be removed")]
         public static readonly DerObjectIdentifier dilithium5_aes = new DerObjectIdentifier("1.3.6.1.4.1.2.267.11.8.7"); // dilithium.branch("6");
 
         /*

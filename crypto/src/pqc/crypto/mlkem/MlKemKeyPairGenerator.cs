@@ -7,19 +7,18 @@ namespace Org.BouncyCastle.Pqc.Crypto.MLKem
         : IAsymmetricCipherKeyPairGenerator
     {
         private MLKemParameters mlkemParams;
-        
+
         private SecureRandom random;
 
-        private void Initialize(
-            KeyGenerationParameters param)
+        public void Init(KeyGenerationParameters param)
         {
-            this.mlkemParams = ((MLKemKeyGenerationParameters)param).Parameters;;
-            this.random = param.Random; 
+            this.mlkemParams = ((MLKemKeyGenerationParameters)param).Parameters;
+            this.random = param.Random;
         }
 
-        private AsymmetricCipherKeyPair GenKeyPair()
+        public AsymmetricCipherKeyPair GenerateKeyPair()
         {
-            MLKemEngine engine = mlkemParams.Engine;
+            var engine = mlkemParams.GetEngine();
             engine.Init(random);
             engine.GenerateKemKeyPair(out byte[] t, out byte[] rho, out byte[] s, out byte[] hpk, out byte[] nonce);
 
@@ -28,19 +27,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.MLKem
             return new AsymmetricCipherKeyPair(pubKey, privKey);
         }
 
-        public void Init(KeyGenerationParameters param)
-        {
-            this.Initialize(param);
-        }
-
-        public AsymmetricCipherKeyPair GenerateKeyPair()
-        {
-            return GenKeyPair();
-        }
-
+        // FIXME Avoid needing this in the public API
         public AsymmetricCipherKeyPair InternalGenerateKeyPair(byte[] d, byte[] z)
         {
-            byte[][] keyPair = mlkemParams.Engine.GenerateKemKeyPairInternal(d, z);
+            var engine = mlkemParams.GetEngine();
+            byte[][] keyPair = engine.GenerateKemKeyPairInternal(d, z);
             MLKemPublicKeyParameters pubKey = new MLKemPublicKeyParameters(mlkemParams, keyPair[0], keyPair[1]);
             MLKemPrivateKeyParameters privKey = new MLKemPrivateKeyParameters(mlkemParams, keyPair[2], keyPair[3], keyPair[4], keyPair[0], keyPair[1]);
             return new AsymmetricCipherKeyPair(pubKey, privKey);

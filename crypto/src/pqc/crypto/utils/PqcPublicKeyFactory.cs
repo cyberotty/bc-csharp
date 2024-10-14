@@ -87,13 +87,15 @@ namespace Org.BouncyCastle.Pqc.Crypto.Utilities
             Converters[BCObjectIdentifiers.picnicl3full] = PicnicConverter;
             Converters[BCObjectIdentifiers.picnicl5full] = PicnicConverter;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             Converters[BCObjectIdentifiers.dilithium2] = DilithiumConverter;
             Converters[BCObjectIdentifiers.dilithium3] = DilithiumConverter;
             Converters[BCObjectIdentifiers.dilithium5] = DilithiumConverter;
             Converters[BCObjectIdentifiers.dilithium2_aes] = DilithiumConverter;
             Converters[BCObjectIdentifiers.dilithium3_aes] = DilithiumConverter;
             Converters[BCObjectIdentifiers.dilithium5_aes] = DilithiumConverter;
-            
+#pragma warning restore CS0618 // Type or member is obsolete
+
             Converters[BCObjectIdentifiers.falcon_512] = FalconConverter;
             Converters[BCObjectIdentifiers.falcon_1024] = FalconConverter;
 
@@ -111,6 +113,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Utilities
             Converters[BCObjectIdentifiers.hqc256] = HqcConverter;
 
 
+#pragma warning disable CS0618 // Type or member is obsolete
             Converters[BCObjectIdentifiers.sphincsPlus] = SphincsPlusConverter;
             Converters[BCObjectIdentifiers.sphincsPlus_sha2_128s_r3] = SphincsPlusConverter;
             Converters[BCObjectIdentifiers.sphincsPlus_sha2_128f_r3] = SphincsPlusConverter;
@@ -150,6 +153,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Utilities
             Converters[BCObjectIdentifiers.sphincsPlus_sha2_256f] = SphincsPlusConverter;
             Converters[BCObjectIdentifiers.sphincsPlus_shake_256s] = SphincsPlusConverter;
             Converters[BCObjectIdentifiers.sphincsPlus_shake_256f] = SphincsPlusConverter;
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary> Create a public key from a SubjectPublicKeyInfo encoding</summary>
@@ -243,6 +247,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Utilities
             }
         }
 
+#pragma warning disable CS0618 // Type or member is obsolete
         private static AsymmetricKeyParameter SphincsPlusConverter(SubjectPublicKeyInfo keyInfo, object defaultParams)
         {
             try
@@ -262,6 +267,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Utilities
                 return new SphincsPlusPublicKeyParameters(spParams, keyEnc);
             }
         }
+#pragma warning restore CS0618 // Type or member is obsolete
 
         private static AsymmetricKeyParameter CmceConverter(SubjectPublicKeyInfo keyInfo, object defaultParams)
         {

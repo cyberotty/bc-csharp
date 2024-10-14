@@ -138,8 +138,10 @@ namespace Org.BouncyCastle.Operators.Utilities
             Algorithms["SHA256WITHCVC-ECDSA"] = EacObjectIdentifiers.id_TA_ECDSA_SHA_256;
             Algorithms["SHA384WITHCVC-ECDSA"] = EacObjectIdentifiers.id_TA_ECDSA_SHA_384;
             Algorithms["SHA512WITHCVC-ECDSA"] = EacObjectIdentifiers.id_TA_ECDSA_SHA_512;
+#pragma warning disable CS0618 // Type or member is obsolete
             Algorithms["SHA3-512WITHSPHINCS256"] = BCObjectIdentifiers.sphincs256_with_SHA3_512;
             Algorithms["SHA512WITHSPHINCS256"] = BCObjectIdentifiers.sphincs256_with_SHA512;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             Algorithms["SHA1WITHPLAIN-ECDSA"] = BsiObjectIdentifiers.ecdsa_plain_SHA1;
             Algorithms["RIPEMD160WITHPLAIN-ECDSA"] = BsiObjectIdentifiers.ecdsa_plain_RIPEMD160;
@@ -205,6 +207,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             Algorithms["XMSSMT-SHAKE128"] = BCObjectIdentifiers.xmss_mt_SHAKE128;
             Algorithms["XMSSMT-SHAKE256"] = BCObjectIdentifiers.xmss_mt_SHAKE256;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             Algorithms["SPHINCS+"] = BCObjectIdentifiers.sphincsPlus;
             Algorithms["SPHINCSPLUS"] = BCObjectIdentifiers.sphincsPlus;
 
@@ -214,6 +217,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             Algorithms["DILITHIUM2-AES"] = BCObjectIdentifiers.dilithium2_aes;
             Algorithms["DILITHIUM3-AES"] = BCObjectIdentifiers.dilithium3_aes;
             Algorithms["DILITHIUM5-AES"] = BCObjectIdentifiers.dilithium5_aes;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             Algorithms["FALCON-512"] = BCObjectIdentifiers.falcon_512;
             Algorithms["FALCON-1024"] = BCObjectIdentifiers.falcon_1024;
@@ -263,6 +267,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             NoParams.Add(RosstandartObjectIdentifiers.id_tc26_signwithdigest_gost_3410_12_256);
             NoParams.Add(RosstandartObjectIdentifiers.id_tc26_signwithdigest_gost_3410_12_512);
 
+#pragma warning disable CS0618 // Type or member is obsolete
             //
             // SPHINCS-256
             //
@@ -302,6 +307,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             NoParams.Add(BCObjectIdentifiers.dilithium2_aes);
             NoParams.Add(BCObjectIdentifiers.dilithium3_aes);
             NoParams.Add(BCObjectIdentifiers.dilithium5_aes);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             //
             // Falcon
@@ -455,6 +461,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             DigestOids[RosstandartObjectIdentifiers.id_tc26_signwithdigest_gost_3410_12_256] = RosstandartObjectIdentifiers.id_tc26_gost_3411_12_256;
             DigestOids[RosstandartObjectIdentifiers.id_tc26_signwithdigest_gost_3410_12_512] = RosstandartObjectIdentifiers.id_tc26_gost_3411_12_512;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             DigestOids[BCObjectIdentifiers.sphincsPlus_sha2_128s_r3] = NistObjectIdentifiers.IdSha256;
             DigestOids[BCObjectIdentifiers.sphincsPlus_sha2_128f_r3] = NistObjectIdentifiers.IdSha256;
             DigestOids[BCObjectIdentifiers.sphincsPlus_shake_128s_r3] = NistObjectIdentifiers.IdShake256;
@@ -480,6 +487,7 @@ namespace Org.BouncyCastle.Operators.Utilities
             DigestOids[BCObjectIdentifiers.sphincsPlus_sha2_256f_r3_simple] = NistObjectIdentifiers.IdSha256;
             DigestOids[BCObjectIdentifiers.sphincsPlus_shake_256s_r3_simple] = NistObjectIdentifiers.IdShake256;
             DigestOids[BCObjectIdentifiers.sphincsPlus_shake_256f_r3_simple] = NistObjectIdentifiers.IdShake256;
+#pragma warning restore CS0618 // Type or member is obsolete
 
             //m_digestOids[GMObjectIdentifiers.sm2sign_with_rmd160] = TeleTrusTObjectIdentifiers.RipeMD160;
             //m_digestOids[GMObjectIdentifiers.sm2sign_with_sha1] = OiwObjectIdentifiers.IdSha1;
